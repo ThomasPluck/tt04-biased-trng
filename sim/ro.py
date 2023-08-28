@@ -4,21 +4,21 @@ from sky130_hdl21.digital_cells import high_density as s
 @h.paramclass
 class RO_params:
 
-    stages = h.Param(7, dtype=int, desc="Number of stages in the ring oscillator")
+    stages = h.Param(default=7, dtype=int, desc="Number of stages in the ring oscillator")
 
 @h.generator
-def gen_RO(params : RO_params):
+def gen_RO(params : RO_params) -> h.Module:
 
-    ro = h.Module()
-    ro.VSS, ro.VDD = 2 * h.Port()
-    ro.BIAS = h.Port()
+    ro = h.Module(name="ro")
+    ro.VSS, ro.VDD, ro.ENABLE = 3 * h.Port()
     ro.stages = h.Port(width = params.stages)
 
     for i in range(params.stages):
 
         ro.add(
-            s.inv_8(
+            s.nand2_1()(
                 A = ro.stages[i % params.stages],
+                B = ro.ENABLE,
                 Y = ro.stages[(i+1) % params.stages],
                 VGND = ro.VSS,
                 VNB = ro.VSS,
@@ -28,25 +28,41 @@ def gen_RO(params : RO_params):
             name=f"inv_{i}"
         )
 
-    ro.BIAS = ro.stages[-1]
+    out = h.Module()
+    out.VDD,out.VSS,out.ENABLE,out.BIAS = 4 * h.Port()
+    out.stages = h.Signal(width=params.stages-1)
 
-    return ro
+    out.add(
+        ro()(VSS=out.VSS,
+             VDD=out.VDD,
+             stages=h.Concat(out.stages,out.BIAS),
+             ENABLE=out.ENABLE),
+        name="ro"
+    )
+
+    return out
 
 @h.generator
-def gen_VCRO(params : RO_params):
+def gen_VCRO(params : RO_params) -> h.Module:
 
 
     vcro = h.Module()
     vcro.VSS, vcro.VDD = 2 * h.Port()
-    vcro.CTRL, vcro.BIAS, vcro.OUT = 3 * h.Port()
+    vcro.CTRL, vcro.OUT, vcro.ENABLE = 3 * h.Port()
+    vcro.BIAS = h.Signal()
 
     vcro.add(
-        gen_RO(params)(VSS=vcro.VSS, VDD=vcro.VDD, BIAS=vcro.BIAS)
+        gen_RO(params)(
+            VSS=vcro.VSS,
+            VDD=vcro.VDD,
+            BIAS=vcro.BIAS,
+            ENABLE=vcro.ENABLE
+        )
         , name="ro"
     )
 
     vcro.add(
-        s.inv_4(
+        s.inv_2()(
             A = vcro.CTRL,
             Y = vcro.BIAS,
             VGND = vcro.VSS,
@@ -58,7 +74,7 @@ def gen_VCRO(params : RO_params):
     )
 
     vcro.add(
-        s.inv_4(
+        s.inv_2()(
             A = vcro.BIAS,
             Y = vcro.OUT,
             VGND = vcro.VSS,

@@ -22,7 +22,7 @@ class vDAC_cell:
                         VPWR = VDD,
                         VPB = VDD)
 
-    # en_vref = i_enable & (~(i_sign ^ i_data))
+    # en_vref = i_enable & (i_sign^i_data);
     xor = s.xor2_1(p)(A=i_sign,
                       B=i_data,
                       VGND = VSS,
@@ -38,7 +38,7 @@ class vDAC_cell:
                        VPB = VDD)
     # en_vref = and1.X
 
-    # en_pupd = i_enable & (i_sign^i_data);
+    # en_pupd = i_enable & (~(i_sign ^ i_data))
     ixor = s.inv_1(p)(A=xor.X,
                       VGND = VSS,
                       VNB = VSS,
@@ -106,7 +106,7 @@ def gen_vDAC(params : vDAC_Params) -> h.Module:
 
         vdac.add(
             gen_vDAC_cells(params)(
-                i_sign=vdac.inp_bus[params.ncells - 1],
+                i_sign=vdac.inp_bus[-1],
                 i_data=vdac.inp_bus[n],
                 i_enable=vdac.enable,
                 vout=vdac.vout,
