@@ -48,7 +48,7 @@ module nand_cell (
 
     assign out = !(a&b);
 endmodule
-wire
+
 module not_cell (
     input wire in,
     output wire out

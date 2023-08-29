@@ -54,7 +54,7 @@ def gen_VCRO(params : RO_params) -> h.Module:
     )
 
     vcro.add(
-        s.inv_16()(
+        s.inv_8()(
             A = vcro.BIAS,
             Y = vcro.OUT,
             VGND = vcro.VSS,
