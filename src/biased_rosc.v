@@ -1,4 +1,5 @@
 `timescale 1ns/10ps
+`include "cells.v"
 
 module inv_with_delay(input A,output Y);
   `ifdef COCOTB_SIM
@@ -39,4 +40,17 @@ module ring_osc(input nrst,output osc);
   assign delay_in = {delay_out[NUM_INVERTERS-2:0], osc_out};
   nand2_with_delay nand2_with_delay(.A(nrst),.B(delay_out[NUM_INVERTERS-1]),.Y(osc_out));
   assign osc = osc_out;
+endmodule
+
+module bias(input BUF, input CTRL, output OUT);
+  wire buffer, ctrl, bias, out;
+
+  assign buffer = BUF;
+  assign ctrl = CTRL;
+  assign out = OUT;
+
+  sky130_fd_sc_hd__inv_2 ctrl_inv(.A(ctrl), .Y(bias));
+  sky130_fd_sc_hd__inv_4 out_inv(.A(bias), .Y(out));
+  sky130_fd_sc_hd__inv_4 buf_inv(.A(buffer), .Y(bias));
+
 endmodule
