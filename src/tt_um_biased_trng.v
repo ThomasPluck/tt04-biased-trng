@@ -29,7 +29,7 @@ module tt_um_biased_trng (
     // Control signals for VDAC
     reg [BITWIDTH-1:0] i_data = 0;
     wire vdac_out;
-    vdac vdac_inst(BITWIDTH)(.i_data(i_data), .i_enable(ena), .vout_notouch_(vdac_out));
+    vdac #(.BITWIDTH(BITWIDTH)) vdac_inst(.i_data(i_data), .i_enable(ena), .vout_notouch_(vdac_out));
 
     // Connecting VDAC to bias
     assign bias_inst.CTRL = vdac_out;

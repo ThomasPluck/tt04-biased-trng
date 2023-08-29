@@ -30,7 +30,7 @@ def gen_VCRO(params : RO_params) -> h.Module:
         )
 
     vcro.add(
-        s.inv_2()(
+        s.inv_4()(
             A = vcro.stages[-1],
             Y = vcro.BIAS,
             VGND = vcro.VSS,
