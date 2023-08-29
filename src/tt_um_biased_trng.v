@@ -22,17 +22,15 @@ module tt_um_biased_trng (
     wire osc;
     ring_osc ring_osc_inst(.nrst(rst_n), .osc(osc));
 
-    // Instantiate bias
-    wire bias_out;
-    bias bias_inst(.BUF(osc), .CTRL(), .OUT(bias_out));  // CTRL will be connected later
 
     // Control signals for VDAC
     reg [BITWIDTH-1:0] i_data = 0;
     wire vdac_out;
     vdac #(.BITWIDTH(BITWIDTH)) vdac_inst(.i_data(i_data), .i_enable(ena), .vout_notouch_(vdac_out));
 
-    // Connecting VDAC to bias
-    assign bias_inst.CTRL = vdac_out;
+    // Instantiate bias
+    wire bias_out;
+    bias bias_inst(.BUF(osc), .CTRL(vdac_out), .OUT(bias_out));  // CTRL will be connected later
 
     // Setting up control for VDAC based on the provided description
     assign i_data[0] = ui_in[0];
