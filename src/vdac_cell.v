@@ -23,7 +23,6 @@
 `define __VDAC_CELL__
 
 `default_nettype none
-`include "sky130_fd_sc_hd.v"
 
 module vdac_cell #(parameter PARALLEL_CELLS = 4) (
 	input wire	i_sign,
