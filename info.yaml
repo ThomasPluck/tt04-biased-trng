@@ -6,7 +6,7 @@ project:
 # If using an HDL, set wokwi_id as 0 and uncomment and list your source files here. 
 # Source files must be in ./src and you must list each source file separately
   source_files:
-    - cells.v    
+    # - cells.v    
     - vdac_cell.v
     - vdac.v
     - biased_rosc.v
@@ -50,7 +50,7 @@ documentation:
 
       The inverter-bias system pass through two D-flip flops connected in series with their `set` signals tied high
       and `reset` being connected to the `rst_n` control wire and their clocks being controlled by `CLK`. Finally,
-      these are passed through a `ena`-enabled `AND` which 
+      these are passed through a `ena`-enabled `AND` which gates the final output of the TRNG.
 
 # Instructions on how someone could test your project, include things like what buttons do what and how to set the clock if needed
   how_to_test:  |
