@@ -17,16 +17,16 @@ module tt_um_biased_trng (
 
     // Parameters
     parameter BITWIDTH = 8;
-    parameter NUM_OSCILLATORS = 7;
+    parameter NUM_OSCILLATORS = 6;
     parameter OSCILLATOR_LENGTH = 7;
 
     // Instantiate ring oscillator
     wire osc;
-    multiple_ring_oscillators #(.NUM_OSCILLATORS(NUM_OSCILLATORS), .OSCILLATOR_LENGTH(OSCILLATOR_LENGTH)) ring_osc_inst(.nrst(rst_n), .osc(osc));
+    multiple_ring_oscillators #(.NUM_OSCILLATORS(NUM_OSCILLATORS), .OSCILLATOR_LENGTH(OSCILLATOR_LENGTH)) ring_osc_inst(.ena(ena), .osc(osc));
 
 
     // Control signals for VDAC
-    reg [BITWIDTH-1:0] i_data = 0;
+    reg [BITWIDTH:0] i_data = 0;
     wire vdac_out;
     vdac #(.BITWIDTH(BITWIDTH)) vdac_inst(.i_data(i_data), .i_enable(ena), .vout_notouch_(vdac_out));
 
@@ -35,17 +35,24 @@ module tt_um_biased_trng (
     bias bias_inst(.BUF(osc), .CTRL(vdac_out), .OUT(bias_out));  // CTRL will be connected later
 
     // Setting up control for VDAC based on the provided description
-    assign i_data[0] = ui_in[0];
-    assign i_data[1] = ui_in[0];
-    assign i_data[2] = ui_in[0];
-    assign i_data[3] = ui_in[0];
-    assign i_data[4] = ui_in[1];
-    assign i_data[5] = ui_in[1];
-    assign i_data[6] = ui_in[2];
+    assign i_data[0] = ui_in[1];
+    assign i_data[1] = ui_in[1];
+    assign i_data[2] = ui_in[1];
+    assign i_data[3] = ui_in[1];
+    assign i_data[4] = ui_in[2];
+    assign i_data[5] = ui_in[2];
+    assign i_data[6] = ui_in[3];
+    assign i_data[7] = ui_in[0];
 
-    // Instantiate two D flip-flops
-    wire dff1_out;
-    dff_cell dff1(.clk(clk), .d(bias_out), .q(dff1_out), .notq());
-    dff_cell dff2(.clk(clk), .d(dff1_out), .q(uo_out[0]), .notq());
+    // Instantiate two D flip-flops with reset
+    wire dff1_out, dff2_out;
+    dffsr_cell dff1(.clk(clk), .d(bias_out), .s(1'b0), .r(rst_n), .q(dff1_out), .notq());
+    dffsr_cell dff2(.clk(clk), .d(dff1_out), .s(1'b0), .r(rst_n), .q(dff2_out), .notq());
+    and2_with_delay out_and(.A(ena), .B(dff2_out), .Y(uo_out[0]));
+
+    // Tie unused wires low
+    assign uo_out[7:1] = 7'b0;
+    assign uio_out = 8'b0;
+    assign uio_oe = 8'b0;
 
 endmodule

@@ -10,6 +10,14 @@ module inv_with_delay(input A,output Y);
   `endif
 endmodule
 
+module and2_with_delay(input A,input B,output Y);
+  `ifdef COCOTB_SIM
+  assign #0.05 Y = ~(A & B);
+  `else
+  sky130_fd_sc_hd__and2_1 and2(.A(A),.B(B),.Y(Y));
+  `endif
+endmodule
+
 module nand2_with_delay(input A,input B,output Y);
   `ifdef COCOTB_SIM
   assign #0.05 Y = ~(A & B);
@@ -18,14 +26,7 @@ module nand2_with_delay(input A,input B,output Y);
   `endif
 endmodule
 
-module ring_osc(input nrst,output osc);
-  // We count for 1 scan_clk period which expected at 166uS (6KHz).
-  // If the delay of one inverter is 20ps and the ring is 150 inverters long,
-  // then the ring period is 6nS (2*150inv*20pS/inv)
-  // This is 166MHz so expect a count of 166*166 nominally. 
-  // For more time resolution make scan_clk slower but that requires more
-  // counter depth. 
-  // scan clk slowing can be done externally to the TT IC or with the clk div. 
+module ring_osc(input ena,output osc);
 
   localparam NUM_INVERTERS = 150; //  must be an even number
   
@@ -38,7 +39,7 @@ module ring_osc(input nrst,output osc);
         .Y(delay_out)
     );
   assign delay_in = {delay_out[NUM_INVERTERS-2:0], osc_out};
-  nand2_with_delay nand2_with_delay(.A(nrst),.B(delay_out[NUM_INVERTERS-1]),.Y(osc_out));
+  nand2_with_delay nand2_with_delay(.A(ena),.B(delay_out[NUM_INVERTERS-1]),.Y(osc_out));
   assign osc = osc_out;
 endmodule
 
@@ -46,7 +47,7 @@ module multiple_ring_oscillators#(
     parameter NUM_OSCILLATORS = 5, // Number of oscillators
     parameter OSCILLATOR_LENGTH = 7 // Length for all oscillators
 )(
-    input nrst, 
+    input ena, 
     output final_osc
 );
 
@@ -54,7 +55,7 @@ module multiple_ring_oscillators#(
     genvar i;
     generate
         for(i = 0; i < NUM_OSCILLATORS; i=i+1) begin: multiple_ring_osc
-            ring_osc #(OSCILLATOR_LENGTH) ro(.nrst(nrst), .osc(final_osc));
+            ring_osc #(OSCILLATOR_LENGTH) ro(.ena(ena), .osc(final_osc));
         end
     endgenerate
 
