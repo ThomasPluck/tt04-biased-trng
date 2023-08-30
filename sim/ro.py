@@ -5,7 +5,7 @@ from sky130_hdl21.digital_cells import high_density as s
 class RO_params:
 
     stages = h.Param(default=7, dtype=int, desc="Number of stages in the ring oscillator")
-    rows = h.Param(default=4, dtype=int, desc="Number of rows to average across the ring oscillator")
+    rows = h.Param(default=7, dtype=int, desc="Number of rows to average across the ring oscillator")
 
 @h.generator
 def gen_RO(params : RO_params) -> h.Module:
