@@ -17,10 +17,12 @@ module tt_um_biased_trng (
 
     // Parameters
     parameter BITWIDTH = 8;
+    parameter NUM_OSCILLATORS = 7;
+    parameter OSCILLATOR_LENGTH = 7;
 
     // Instantiate ring oscillator
     wire osc;
-    ring_osc ring_osc_inst(.nrst(rst_n), .osc(osc));
+    multiple_ring_oscillators #(.NUM_OSCILLATORS(NUM_OSCILLATORS), .OSCILLATOR_LENGTH(OSCILLATOR_LENGTH)) ring_osc_inst(.nrst(rst_n), .osc(osc));
 
 
     // Control signals for VDAC

@@ -42,8 +42,26 @@ module ring_osc(input nrst,output osc);
   assign osc = osc_out;
 endmodule
 
+module multiple_ring_oscillators#(
+    parameter NUM_OSCILLATORS = 5, // Number of oscillators
+    parameter OSCILLATOR_LENGTH = 7 // Length for all oscillators
+)(
+    input nrst, 
+    output final_osc
+);
+
+    // Instantiate multiple ring oscillators with the same specified length
+    genvar i;
+    generate
+        for(i = 0; i < NUM_OSCILLATORS; i=i+1) begin: multiple_ring_osc
+            ring_osc #(OSCILLATOR_LENGTH) ro(.nrst(nrst), .osc(final_osc));
+        end
+    endgenerate
+
+endmodule
+
 module bias(input BUF, input CTRL, output OUT);
-  wire buffer, ctrl, bias, out;
+  wire buffer, tri2sq, ctrl, bias, out;
 
   assign buffer = BUF;
   assign ctrl = CTRL;
@@ -51,6 +69,7 @@ module bias(input BUF, input CTRL, output OUT);
 
   sky130_fd_sc_hd__inv_2 ctrl_inv(.A(ctrl), .Y(bias));
   sky130_fd_sc_hd__inv_4 out_inv(.A(bias), .Y(out));
-  sky130_fd_sc_hd__inv_4 buf_inv(.A(buffer), .Y(bias));
+  sky130_fd_sc_hd__inv_4 buf_inv(.A(buffer), .Y(tri2sq));
+  sky130_fd_sc_hd__inv_4 tri_inv(.A(tri2sq), .Y(bias));
 
 endmodule
