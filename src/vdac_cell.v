@@ -23,8 +23,8 @@
 `define __VDAC_CELL__
 
 `default_nettype none
-// `include "/foss/pdks/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v"
-// `include "/foss/pdks/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v"
+`include "sky130_fd_sc_hd.v"
+`include "primitives.v"
 
 module vdac_cell #(parameter PARALLEL_CELLS = 4) (
 	input wire	i_sign,

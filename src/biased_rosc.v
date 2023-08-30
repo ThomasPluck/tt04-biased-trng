@@ -1,5 +1,7 @@
 `timescale 1ns/10ps
 `include "cells.v"
+`include "sky130_fd_sc_hd.v"
+`include "primitives.v"
 
 module inv_with_delay(input A,output Y);
   `ifdef COCOTB_SIM
