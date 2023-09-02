@@ -9,7 +9,7 @@ TOPLEVEL_LANG ?= verilog
 ifneq ($(GATES),yes)
 
 # this is the only part you should need to modify:
-VERILOG_SOURCES += $(PWD)/tt_um_biased_trng.v $(PWD)/biased_rosc.v $(PWD)/vdac.v $(PWD)/vdac_cell.v $(PWD)/cells.v
+VERILOG_SOURCES += $(PWD)/tt_um_biased_trng.v $(PWD)/biased_rosc.v $(PWD)/vdac.v $(PWD)/vdac_cell.v $(PWD)/cells.v $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
 
 else
 
