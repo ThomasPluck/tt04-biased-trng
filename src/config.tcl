@@ -6,6 +6,9 @@
 # User config
 set script_dir [file dirname [file normalize [info script]]]
 
+# Make linter use SIM version of Verilog
+set ::env(LINTER_DEFINES) "SIM"
+
 # read some user config that is written by the setup.py program.
 # - the name of the module is defined
 # - the list of source files
