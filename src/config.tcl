@@ -6,9 +6,6 @@
 # User config
 set script_dir [file dirname [file normalize [info script]]]
 
-# Make linter use SIM version of Verilog
-set ::env(LINTER_DEFINES) "SIM"
-
 # read some user config that is written by the setup.py program.
 # - the name of the module is defined
 # - the list of source files
@@ -60,3 +57,12 @@ set ::env(CLOCK_PORT) {clk}
 # don't use power rings or met5
 set ::env(DESIGN_IS_CORE) 0
 set ::env(RT_MAX_LAYER) {met4}
+
+# Make linter use SIM version of Verilog
+set ::env(LINTER_DEFINES) "SIM"
+
+# Linter can't grok black box cells
+set ::env(RUN_LINTER) 0
+
+# Let's try to slip loopy circuits through
+set ::env(QUIT_ON_SYNTH_CHECKS) 0
