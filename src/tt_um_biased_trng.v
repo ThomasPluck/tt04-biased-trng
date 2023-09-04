@@ -47,7 +47,7 @@ module tt_um_biased_trng (
     wire dff1_out, dff2_out;
     sky130_fd_sc_hd__dfrtp_1 dff1(.CLK(clk), .D(bias_out), .RESET_B(rst_n), .Q(dff1_out));
     sky130_fd_sc_hd__dfrtp_1 dff2(.CLK(clk), .D(dff1_out), .RESET_B(rst_n), .Q(dff2_out));
-    sky130_fd_sc_hd__and2_1 out_and(.A(ena), .B(dff2_out), .Y(uo_out[0]));
+    sky130_fd_sc_hd__and2_1 out_and(.A(ena), .B(dff2_out), .X(uo_out[0]));
 
     // Tie unused wires low
     assign uo_out[7:1] = 7'b0;
