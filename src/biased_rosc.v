@@ -1,5 +1,4 @@
 `timescale 1ns/10ps
-`include "cells.v"
 
 module inv_with_delay(input A,output Y);
   `ifdef COCOTB_SIM
