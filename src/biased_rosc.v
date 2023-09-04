@@ -4,9 +4,7 @@
 
 `ifndef __RING_OSCILLATOR__
 `define __RING_OSCILLATOR__
-module ring_osc(input ena, output osc);
-
-    localparam NUM_INVERTERS = 150; // must be an even number
+module ring_osc #(parameter NUM_INVERTERS = 150) (input ena, output osc);
 
     // setup loop of inverters
     wire [NUM_INVERTERS-1:0] delay_in, delay_out;
