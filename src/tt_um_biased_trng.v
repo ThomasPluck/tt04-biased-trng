@@ -35,12 +35,12 @@ module tt_um_biased_trng (
 
     // Setting up control for VDAC based on the provided description
     assign i_data[0] = ui_in[1];
-    assign i_data[1] = ui_in[1];
-    assign i_data[2] = ui_in[1];
-    assign i_data[3] = ui_in[1];
-    assign i_data[4] = ui_in[2];
-    assign i_data[5] = ui_in[2];
-    assign i_data[6] = ui_in[3];
+    assign i_data[1] = ui_in[2];
+    assign i_data[2] = ui_in[3];
+    assign i_data[3] = ui_in[4];
+    assign i_data[4] = ui_in[5];
+    assign i_data[5] = ui_in[6];
+    assign i_data[6] = ui_in[7];
     assign i_data[7] = ui_in[0];
 
     // Instantiate two D flip-flops with reset
