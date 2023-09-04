@@ -1,30 +1,5 @@
 `timescale 1ns/10ps
 
-module inv_with_delay(input A,output Y);
-  `ifdef COCOTB_SIM
-  assign #0.02 Y = ~A; // pick a fairly quick delay from the tt_025C_1v80 liberty file
-                       // the actualy delay per stage is going to be slower
-  `else
-  sky130_fd_sc_hd__inv_1 inv(.A(A),.Y(Y));
-  `endif
-endmodule
-
-module and2_with_delay(input A,input B,output Y);
-  `ifdef COCOTB_SIM
-  assign #0.05 Y = ~(A & B);
-  `else
-  sky130_fd_sc_hd__and2_1 and2(.A(A),.B(B),.Y(Y));
-  `endif
-endmodule
-
-module nand2_with_delay(input A,input B,output Y);
-  `ifdef COCOTB_SIM
-  assign #0.05 Y = ~(A & B);
-  `else
-  sky130_fd_sc_hd__nand2_1 nand2(.A(A),.B(B),.Y(Y));
-  `endif
-endmodule
-
 module ring_osc(input ena,output osc);
 
   localparam NUM_INVERTERS = 150; //  must be an even number
@@ -33,12 +8,9 @@ module ring_osc(input ena,output osc);
   // http://svn.clairexen.net/handicraft/2015/ringosc/ringosc.v
   wire [NUM_INVERTERS-1:0] delay_in, delay_out;
   wire osc_out;
-  inv_with_delay idelay [NUM_INVERTERS-1:0] (
-        .A(delay_in),
-        .Y(delay_out)
-    );
+  sky130_fd_sc_hd__inv_1 idelay [NUM_INVERTERS-1:0] (.A(delay_in),.Y(delay_out));
   assign delay_in = {delay_out[NUM_INVERTERS-2:0], osc_out};
-  nand2_with_delay nand2_with_delay(.A(ena),.B(delay_out[NUM_INVERTERS-1]),.Y(osc_out));
+  sky130_fd_sc_hd__nand2_1 nand(.A(ena),.B(delay_out[NUM_INVERTERS-1]),.Y(osc_out));
   assign osc = osc_out;
 endmodule
 
