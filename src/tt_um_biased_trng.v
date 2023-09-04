@@ -1,5 +1,5 @@
 `include "vdac.v"
-`include "biased_rosc.v"
+// `include "biased_rosc.v"
 
 `default_nettype none
 
