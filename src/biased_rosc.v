@@ -16,7 +16,7 @@ module ring_osc(input ena, output osc);
     endgenerate
 
     assign delay_in = {delay_out[NUM_INVERTERS-2:0], osc_out};
-    sky130_fd_sc_hd__nand2_1 nand(.A(ena), .B(delay_out[NUM_INVERTERS-1]), .Y(osc_out));
+    sky130_fd_sc_hd__nand2_1 nand_gate(.A(ena), .B(delay_out[NUM_INVERTERS-1]), .Y(osc_out));
     assign osc = osc_out;
 
 endmodule
