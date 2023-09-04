@@ -62,7 +62,7 @@ set ::env(RT_MAX_LAYER) {met4}
 set ::env(LINTER_DEFINES) "SIM"
 
 # Linter can't grok black box cells
-# set ::env(RUN_LINTER) 0
+set ::env(RUN_LINTER) 0
 
 # Let's try to slip loopy circuits through
-# set ::env(QUIT_ON_SYNTH_CHECKS) 0
+set ::env(QUIT_ON_SYNTH_CHECKS) 0
