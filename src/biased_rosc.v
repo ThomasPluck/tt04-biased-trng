@@ -11,7 +11,7 @@ module ring_osc(input ena, output osc);
     genvar i;
     generate
         for (i = 0; i < NUM_INVERTERS; i = i + 1) begin : inv_gen
-            sky130_fd_sc_hd__inv_1 idelay (.A(delay_in[i]), .Y(delay_out[i]));
+            sky130_fd_sc_hd__inv_1 idelay_i (.A(delay_in[i]), .Y(delay_out[i]));
         end
     endgenerate
 
