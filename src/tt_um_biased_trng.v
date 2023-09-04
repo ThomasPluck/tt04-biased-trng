@@ -1,7 +1,7 @@
 `include "vdac.v"
 `include "biased_rosc.v"
 
-`default_nettype none
+// `default_nettype none
 
 module tt_um_biased_trng (
     input  wire [7:0] ui_in,    // Dedicated inputs - connected to the input switches
@@ -31,7 +31,7 @@ module tt_um_biased_trng (
 
     // Instantiate bias
     wire bias_out;
-    bias bias_inst(.BUF(osc), .CTRL(vdac_out), .OUT(bias_out));  // CTRL will be connected later
+    bias bias_inst(.BUF(osc), .CTRL(vdac_out), .OUT(bias_out));
 
     // Setting up control for VDAC based on the provided description
     assign i_data[0] = ui_in[1];
