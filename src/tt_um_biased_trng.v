@@ -1,5 +1,5 @@
 `include "vdac.v"
-// `include "biased_rosc.v"
+`include "biased_rosc.v"
 
 `default_nettype none
 
@@ -21,7 +21,7 @@ module tt_um_biased_trng (
 
     // Instantiate ring oscillator
     wire osc;
-    multiple_ring_oscillators #(.NUM_OSCILLATORS(NUM_OSCILLATORS), .OSCILLATOR_LENGTH(OSCILLATOR_LENGTH)) ring_osc_inst(.ena(ena), .osc(osc));
+    multiple_ring_oscillators #(.NUM_OSCILLATORS(NUM_OSCILLATORS), .OSCILLATOR_LENGTH(OSCILLATOR_LENGTH)) ring_osc_inst(.ena(ena), .final_osc(osc));
 
 
     // Control signals for VDAC

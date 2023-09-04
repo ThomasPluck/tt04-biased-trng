@@ -1,5 +1,9 @@
 `timescale 1ns/10ps
 
+`default_nettype none
+
+`ifndef __RING_OSCILLATOR__
+`define __RING_OSCILLATOR__
 module ring_osc(input ena, output osc);
 
     localparam NUM_INVERTERS = 150; // must be an even number
@@ -20,7 +24,10 @@ module ring_osc(input ena, output osc);
     assign osc = osc_out;
 
 endmodule
+`endif
 
+`ifndef __MULTIPLE_RING_OSCILLATORS__
+`define __MULTIPLE_RING_OSCILLATORS__
 module multiple_ring_oscillators#(
     parameter NUM_OSCILLATORS = 5, // Number of oscillators
     parameter OSCILLATOR_LENGTH = 7 // Length for all oscillators
@@ -38,7 +45,10 @@ module multiple_ring_oscillators#(
     endgenerate
 
 endmodule
+`endif
 
+`ifndef __BIAS__
+`define __BIAS__
 module bias(input BUF, input CTRL, output OUT);
   wire buffer, tri2sq, ctrl, bias, out;
 
@@ -52,3 +62,4 @@ module bias(input BUF, input CTRL, output OUT);
   sky130_fd_sc_hd__inv_2 tri_inv(.A(tri2sq), .Y(bias));
 
 endmodule
+`endif
