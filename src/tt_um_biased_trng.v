@@ -16,8 +16,8 @@ module tt_um_biased_trng (
 
     // Parameters
     parameter BITWIDTH = 6;
-    parameter NUM_OSCILLATORS = 6;
-    parameter OSCILLATOR_LENGTH = 7;
+    parameter NUM_OSCILLATORS = 15;
+    parameter OSCILLATOR_LENGTH = 6;
 
     // Instantiate ring oscillator
     wire osc;
@@ -34,14 +34,7 @@ module tt_um_biased_trng (
     bias bias_inst(.BUF(osc), .CTRL(vdac_out), .OUT(bias_out));
 
     // Setting up control for VDAC based on the provided description
-    assign i_data[0] = ui_in[1];
-    assign i_data[1] = ui_in[2];
-    assign i_data[2] = ui_in[3];
-    assign i_data[3] = ui_in[4];
-    assign i_data[4] = ui_in[5];
-    assign i_data[5] = ui_in[6];
-    // assign i_data[6] = ui_in[7];
-    // assign i_data[7] = ui_in[0];
+    assign i_data[5:0] = ui_in[5:0];
 
     // Instantiate two D flip-flops with reset
     wire dff1_out, dff2_out;
@@ -50,6 +43,7 @@ module tt_um_biased_trng (
     sky130_fd_sc_hd__and2_1 out_and(.A(ena), .B(dff2_out), .X(uo_out[0]));
 
     // Tie unused wires low
+    assign uo_out[7:6] = 2'b0;
     assign uo_out[7:1] = 7'b0;
     assign uio_out = 8'b0;
     assign uio_oe = 8'b0;

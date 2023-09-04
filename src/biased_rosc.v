@@ -54,9 +54,9 @@ module bias(input BUF, input CTRL, output OUT);
   assign ctrl = CTRL;
   assign out = OUT;
 
-  sky130_fd_sc_hd__inv_2 ctrl_inv(.A(ctrl), .Y(bias));
+  sky130_fd_sc_hd__inv_4 ctrl_inv(.A(ctrl), .Y(bias));
   sky130_fd_sc_hd__inv_2 out_inv(.A(bias), .Y(out));
-  sky130_fd_sc_hd__inv_4 buf_inv(.A(buffer), .Y(tri2sq));
+  sky130_fd_sc_hd__inv_2 buf_inv(.A(buffer), .Y(tri2sq));
   sky130_fd_sc_hd__inv_2 tri_inv(.A(tri2sq), .Y(bias));
 
 endmodule
