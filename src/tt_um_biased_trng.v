@@ -15,7 +15,7 @@ module tt_um_biased_trng (
 );
 
     // Parameters
-    parameter BITWIDTH = 8;
+    parameter BITWIDTH = 6;
     parameter NUM_OSCILLATORS = 6;
     parameter OSCILLATOR_LENGTH = 7;
 
@@ -40,8 +40,8 @@ module tt_um_biased_trng (
     assign i_data[3] = ui_in[4];
     assign i_data[4] = ui_in[5];
     assign i_data[5] = ui_in[6];
-    assign i_data[6] = ui_in[7];
-    assign i_data[7] = ui_in[0];
+    // assign i_data[6] = ui_in[7];
+    // assign i_data[7] = ui_in[0];
 
     // Instantiate two D flip-flops with reset
     wire dff1_out, dff2_out;
