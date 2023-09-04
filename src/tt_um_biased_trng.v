@@ -46,8 +46,8 @@ module tt_um_biased_trng (
 
     // Instantiate two D flip-flops with reset
     wire dff1_out, dff2_out;
-    dffsr_cell dff1(.clk(clk), .d(bias_out), .s(1'b0), .r(rst_n), .q(dff1_out), .notq());
-    dffsr_cell dff2(.clk(clk), .d(dff1_out), .s(1'b0), .r(rst_n), .q(dff2_out), .notq());
+    sky130_fd_sc_hd__dfrtp_1 dff1(.CLK(clk), .D(bias_out), .RESET_B(rst_n), .Q(dff1_out));
+    sky130_fd_sc_hd__dfrtp_1 dff2(.CLK(clk), .D(dff1_out), .RESET_B(rst_n), .Q(dff2_out));
     and2_with_delay out_and(.A(ena), .B(dff2_out), .Y(uo_out[0]));
 
     // Tie unused wires low
